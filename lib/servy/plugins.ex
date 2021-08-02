@@ -8,6 +8,10 @@ defmodule Servy.Plugins do
     conv
   end
 
+  def rewrite_path(%Conv{path: "/bears?id=" <> id} = conv) do
+    %{ conv | path: "/bears/#{id}" }
+  end
+
   def track(%Conv{} = conv), do: conv
 
   def rewrite_path(%Conv{path: "/wildlife"} = conv) do
@@ -15,6 +19,8 @@ defmodule Servy.Plugins do
   end
 
   def rewrite_path(%Conv{} = conv), do: conv
+
+
 
   def log(%Conv{} = conv), do: IO.inspect conv
 end
