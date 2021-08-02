@@ -29,6 +29,13 @@ defmodule Servy.Handler do
     BearControler.index(conv)
   end
 
+  def route(%Conv{method: "GET", path: "/bears/new"} = conv) do
+    @pages_path
+    |> Path.join("form.html")
+    |> File.read()
+    |> handle_file(conv)
+  end
+
   def route(%Conv{method: "GET", path: "/bears/" <> id} = conv) do
     params = Map.put(conv.params, "id", id)
     BearControler.show(conv, params)
@@ -165,6 +172,18 @@ IO.puts(response)
 
 request = """
 GET /bears?id=4 HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+
+response = Servy.Handler.handle(request)
+
+IO.puts(response)
+
+request = """
+GET /bears/new HTTP/1.1
 Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
